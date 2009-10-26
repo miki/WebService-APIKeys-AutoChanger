@@ -15,6 +15,7 @@ $changer->set(
 );
 
 my @keys;
+diag("sleeping for 10 seconds...");
 for ( 1 .. 10 ) {
     sleep 1;
     my $key = $changer->get_available;

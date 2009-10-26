@@ -8,15 +8,15 @@ use Data::Valve;
 use UNIVERSAL::require;
 use base qw(Class::Accessor::Fast);
 
-our $VERSION = '0.00001';
+our $VERSION = '0.00002';
 
 __PACKAGE__->mk_accessors($_)
-  for qw(api_keys throttle throttle_class throttle_conf);
+  for qw(api_keys throttle throttle_class throttle_config);
 
 sub new {
     my $class = shift;
     my $self = bless {@_}, $class;
-    if($self->throttle_class || $self->throttle_conf){
+    if($self->throttle_class || $self->throttle_config){
         $self->set_throttle(@_);
     }
     return $self;
@@ -79,6 +79,7 @@ sub get_available {
     }
     else {
         carp("You have run out of your api-key limit.");
+		return undef;
     }
 }
 
@@ -117,8 +118,8 @@ For example, use it with WebService::Simple for YahooJapan Web-API.
           'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
       ],
       ## you don't have to set below explicitly
-      throttle_class => 'Data::Valve', # backend throttler class. (default: Data::Valve)
-      throttle_conf  => { 
+      throttle_class   => 'Data::Valve', # backend throttler class. (default: Data::Valve)
+      throttle_config  => { 
           max_items  => 50000,         # default: 50000
           interval   => 86400,         # default: 86400
       },
